@@ -32,9 +32,14 @@ class ContentsController < ApplicationController
   # POST /contents
   # POST /contents.json
   def create
-    @content = Content.new(content_params)
-    @content 
+    @content = Content.new(thumbnail_url: content_params[:thumbnail_url], seller: content_params[:seller], phone_number: content_params[:phone_number], 
+                                                         price: content_params[:price], location: content_params[:location])
+    puts content_params[:photos]
     if @content.save
+      content_params[:photos].each do |photo|
+        p = Photo.create(photo)
+        @content.photos << p
+        end
       render json: @content, status: :created
     else
       render json: @content.errors, status: :unprocessable_entity
@@ -64,7 +69,7 @@ class ContentsController < ApplicationController
   end
 
   def content_params
-  	params.require(:content).permit(:thumbnail_url, :seller, :phone_number, :price, :location)
+  	params.require(:content).permit(:thumbnail_url, :seller, :phone_number, :price, :location, :photos => [:small_size_url, :normal_size_url])
   end
 end
 
