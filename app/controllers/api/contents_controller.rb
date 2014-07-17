@@ -40,7 +40,7 @@ class ContentsController < ApplicationController
         p = Photo.create(photo)
         @content.photos << p
         end
-      render json: @content, status: :created
+      render json: @content.to_json(:include => [:photos, :audio]), status: :created
     else
       render json: @content.errors, status: :unprocessable_entity
     end
