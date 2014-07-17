@@ -35,7 +35,7 @@ class AudiosController < ApplicationController
     @audio = Audio.new(audio_params)
     if @audio.save
       @content = Content.find(@audio.content_id)
-      @content << @audio
+      @content.audio = @audio
       render json: @audio, status: :created
     else
       render json: @audio.errors, status: :unprocessable_entity

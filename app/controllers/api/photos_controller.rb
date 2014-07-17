@@ -35,8 +35,8 @@ class PhotosController < ApplicationController
     @photo = Photo.new(photo_params)
     if @photo.save
       @content = Content.find(@photo.content_id)
-      @content << @photo
-      render json: @photo, status: :created, location: @photo
+      @content.photos << @photo
+      render json: @photo, status: :created
     else
       render json: @photo.errors, status: :unprocessable_entity
     end

@@ -18,7 +18,7 @@ class ContentsController < ApplicationController
   def show
     @content = Content.find(params[:id])
 
-    render json: @content
+    render json: @content.to_json(:include => [:photos, :audio])
   end
 
   # GET /contents/new
@@ -33,7 +33,7 @@ class ContentsController < ApplicationController
   # POST /contents.json
   def create
     @content = Content.new(content_params)
-
+    @content 
     if @content.save
       render json: @content, status: :created
     else
