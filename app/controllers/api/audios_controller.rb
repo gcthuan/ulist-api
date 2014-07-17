@@ -33,8 +33,9 @@ class AudiosController < ApplicationController
   # POST /audios.json
   def create
     @audio = Audio.new(audio_params)
-
     if @audio.save
+      @content = Content.find(@audio.content_id)
+      @content << @audio
       render json: @audio, status: :created
     else
       render json: @audio.errors, status: :unprocessable_entity
@@ -111,7 +112,7 @@ class AudiosController < ApplicationController
   end
 
   def audio_params
-    params.require(:audio).permit(:file_url, :duration)
+    params.require(:audio).permit(:file_url, :duration, :content_id)
   end
 
 end
